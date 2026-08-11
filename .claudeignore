@@ -1,0 +1,7 @@
+vendor/
+build/
+coverage/
+.phpunit.cache/
+*.log
+*.lock
+.DS_Store

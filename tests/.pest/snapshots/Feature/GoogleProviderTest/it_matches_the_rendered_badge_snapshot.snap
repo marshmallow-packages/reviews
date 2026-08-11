@@ -1,0 +1,5 @@
+<script src="https://apis.google.com/js/platform.js?hl=nl" async defer></script>
+
+<div class="g-ratingbadge"
+     data-merchant-id="11223344"
+     data-position="BOTTOM_RIGHT"></div>

@@ -1,0 +1,16 @@
+parameters:
+    level: 8
+    paths:
+        - src
+        - config
+        - tests/Fixtures
+    tmpDir: build/phpstan
+    ignoreErrors:
+        # Larastan resolves the application config path from the bootstrapped
+        # Testbench skeleton, so it does not recognise this package's own config
+        # directory. env() in a publishable package config is correct and
+        # required: without it consumers cannot configure the package until they
+        # publish the config file.
+        -
+            identifier: larastan.noEnvCallsOutsideOfConfig
+            path: config/*

@@ -1,0 +1,18 @@
+<script src="https://apis.google.com/js/platform.js?onload=renderOptIn&amp;hl=nl" async defer></script>
+
+
+<script>
+    window.renderOptIn = function () {
+        window.gapi.load('surveyoptin', function () {
+            window.gapi.surveyoptin.render({
+                merchant_id: 11223344,
+                order_id: "ORDER-42",
+                email: "klant@example.test",
+                delivery_country: "NL",
+                estimated_delivery_date: "2026-08-20",
+                opt_in_style: "CENTER_DIALOG",
+                                    products: [{"gtin":"0123456789012"}],
+                            });
+        });
+    };
+</script>
