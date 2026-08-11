@@ -3,7 +3,10 @@
 Working name in the brief: `marshmallow/laravel-review-collectors`.
 Proposed name: **`marshmallow/reviews`** (see "Package name").
 
-Date: 2026-08-11. Status: awaiting approval. No code written.
+Date: 2026-08-11. Status: **approved and built**. This document is the
+research and design record and is kept as written, including sections that
+describe the pre-build state of the world. Current status and next steps live
+in `docs/STATUS.md`; user facing documentation lives in `README.md`.
 
 ---
 

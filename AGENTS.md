@@ -3,9 +3,16 @@
 Unified review collection for Laravel webshops. One contract per capability,
 one provider per platform, resolved the way Socialite resolves social logins.
 
-Read `docs/BRIEF.md` for why the package is shaped the way it is. It is the
-research and design record, including the provider API findings and the
-decisions that were taken deliberately.
+Read `docs/STATUS.md` first when resuming work: it records where things stand,
+the open decisions, and what happens next. Read `docs/BRIEF.md` for why the
+package is shaped the way it is: it is the research and design record,
+including the provider API findings and the decisions that were taken
+deliberately.
+
+Sentry and Linear are deliberately undeclared for this repo. Packages carry no
+`## Tracking` block (bot-shield has none either); errors surface in the
+consuming application's Sentry. Never guess a Sentry or Linear project for
+this package, ask.
 
 ## Architecture in one paragraph
 
