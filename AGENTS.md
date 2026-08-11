@@ -58,11 +58,13 @@ more than one provider at once.
   `?string` is a fatal incompatibility that makes the class unloadable, not a
   warning. `Reviews::driver()` is untyped on purpose, and carries a
   `@param string|null $driver` docblock instead.
-  This is also why `pestphp/pest` is pinned to `^5.0` rather than bot-shield's
-  `^4.6`: the Pest 4 type-coverage plugin does not honour that docblock and
-  scores the file at 75%, so a matrix that installed Pest 4 failed `--min=100`
-  while a local Pest 5 run passed. The strictness matches bot-shield, the Pest
-  floor does not.
+  That one parameter is also why `test:types` runs at `--min=99` rather than
+  bot-shield's `--min=100`. Pest 5's type-coverage plugin honours the docblock
+  and reports 100%, Pest 4's does not and scores the file at 75%, which puts
+  the package at 99.2%. We support both, because Pest 5 requires Laravel 13
+  and PHP 8.4 while this package supports Laravel 12 and PHP 8.3. The 99 floor
+  buys exactly one unavoidable untyped parameter and nothing else: if the
+  number drops below 100 on a Pest 5 run, something new is genuinely untyped.
 - `Order::shippingAddress()` in `marshmallow/cart` is **not** an Eloquent
   relation: it runs its own query and returns a Model, so reading
   `$order->shippingAddress` throws `LogicException`.
