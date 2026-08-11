@@ -5,7 +5,20 @@ parameters:
         - config
         - tests/Fixtures
     tmpDir: build/phpstan
+    # The deadCatch ignore below only fires under some PHP versions in the
+    # matrix, so an unmatched ignore is expected rather than a problem.
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
+        # PHPStan sees isset($subject->{$name}) on an `object` and concludes
+        # nothing can throw. Eloquent disagrees: reading a property whose
+        # matching method does not return a Relation raises LogicException,
+        # and marshmallow/cart's Order::shippingAddress() is exactly that,
+        # a plain method running its own query. Those catches are the reason
+        # this trait works on a cart site at all, so the analyser is wrong
+        # here and removing them would fatal every one of them.
+        -
+            identifier: deadCatch
+            path: src/Concerns/DerivesReviewableOrder.php
         # Larastan resolves the application config path from the bootstrapped
         # Testbench skeleton, so it does not recognise this package's own config
         # directory. env() in a publishable package config is correct and
