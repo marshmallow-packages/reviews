@@ -20,7 +20,6 @@ use Marshmallow\Reviews\Exceptions\UnknownReviewProvider;
 use Marshmallow\Reviews\Providers\GoogleProvider;
 use Marshmallow\Reviews\Providers\KiyohProvider;
 use Marshmallow\Reviews\Providers\NullProvider;
-use Marshmallow\Reviews\Support\ConfigValue;
 use Marshmallow\Reviews\Support\ExceptionReporter;
 use Marshmallow\Reviews\Support\Gate;
 use Override;
@@ -165,10 +164,6 @@ class Reviews extends Manager
 
     private function reportException(Throwable $e): void
     {
-        if (! ConfigValue::bool($this->config->get('reviews.log.report_exceptions', true))) {
-            return;
-        }
-
         $this->container->make(ExceptionReporter::class)->report($e);
     }
 

@@ -20,6 +20,7 @@ return [
             'active_providers' => 'Actieve providers',
             'consent' => 'Toestemmingscallback',
             'delivery_date' => 'Verwachte leverdatum',
+            'google_requirements' => 'Google velden per bestelling',
             'events' => 'Luisteren naar events',
             'queue' => 'Queue',
         ],
@@ -54,6 +55,7 @@ return [
 
         'delivery_date_configured' => 'resolver ingesteld',
         'delivery_date_missing' => 'geen resolver ingesteld, alleen de google provider heeft die nodig',
+        'google_requirements' => 'zijn niet vanuit de config te controleren. Google toont niets als een uitnodiging niet ook een e-mailadres en een land van levering bevat, en dat land komt van het verzendadres. Een bestelling zonder verzendadres, bijvoorbeeld een digitaal product, levert dus geen review op terwijl deze configuratie klopt.',
         'delivery_date_required' => 'de google provider is actief zonder resolver, waardoor de opt-in nooit verschijnt. Stel estimated_delivery_date in config/reviews.php in, of implementeer reviewEstimatedDeliveryDate() op de order.',
 
         'events_disabled' => 'uitgeschakeld, uitnodigingen verstuur je vanuit je eigen code',

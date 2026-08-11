@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Marshmallow\Reviews\Support;
 
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Throwable;
 
@@ -23,14 +24,22 @@ use Throwable;
  *
  * Deliberately not Laravel's ExceptionHandler::report(). That writes the
  * message to the log channel as well, which is the leak this exists to avoid.
+ *
+ * The reviews.log.report_exceptions switch is honoured here rather than at each
+ * call site, so a new place that catches a Throwable and carries on cannot
+ * report past a site that switched reporting off.
  */
 final readonly class ExceptionReporter
 {
-    public function __construct(private Container $container) {}
+    public function __construct(private Container $container, private Repository $config) {}
 
     public function report(Throwable $exception): void
     {
         try {
+            if (! ConfigValue::bool($this->config->get('reviews.log.report_exceptions', true))) {
+                return;
+            }
+
             if (! $this->container->bound('sentry')) {
                 return;
             }

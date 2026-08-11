@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Blade;
 use Marshmallow\Reviews\Contracts\ReviewProvider;
 use Marshmallow\Reviews\Contracts\SendsInvitations;
 use Marshmallow\Reviews\Data\InvitationResult;
-use Marshmallow\Reviews\Data\ReviewInvitation;
 
 /**
  * What happens when the configuration is wrong or a provider misbehaves.
@@ -16,27 +15,6 @@ use Marshmallow\Reviews\Data\ReviewInvitation;
  * the single worst place in a webshop to throw a 500: the customer has already
  * paid, and the page they land on is the one that fails.
  */
-function explodingSender(): SendsInvitations
-{
-    return new class implements SendsInvitations
-    {
-        public function name(): string
-        {
-            return 'exploding';
-        }
-
-        public function isConfigured(): bool
-        {
-            return true;
-        }
-
-        public function invite(ReviewInvitation $invitation): InvitationResult
-        {
-            throw new RuntimeException('the provider blew up');
-        }
-    };
-}
-
 it('renders nothing rather than throwing when reviews.active has a typo', function (): void {
     config()->set('reviews.active', ['kioyh']);
 
@@ -56,7 +34,7 @@ it('skips an unresolvable provider name instead of failing the fan-out', functio
 });
 
 it('turns a throwing custom provider into a failed result rather than an exception', function (): void {
-    reviewManager()->extend('exploding', fn (): SendsInvitations => explodingSender());
+    reviewManager()->extend('exploding', fn (): SendsInvitations => explodingProvider());
 
     config()->set('reviews.active', ['exploding']);
 

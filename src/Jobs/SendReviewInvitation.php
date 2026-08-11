@@ -152,9 +152,7 @@ final class SendReviewInvitation implements ShouldQueue
      */
     private function logThrowable(Repository $config, LogManager $log, Throwable $exception): void
     {
-        if (ConfigValue::bool($config->get('reviews.log.report_exceptions', true))) {
-            Container::getInstance()->make(ExceptionReporter::class)->report($exception);
-        }
+        Container::getInstance()->make(ExceptionReporter::class)->report($exception);
 
         $this->write(
             $config,

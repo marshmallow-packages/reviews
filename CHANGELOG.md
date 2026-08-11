@@ -1,6 +1,8 @@
 # Release Notes
 
-## [Unreleased](https://github.com/marshmallow-packages/reviews/compare/v1.0.0...1.x)
+All notable changes to `marshmallow/reviews` are documented here. Breaking
+changes and the work needed to move between major versions live in
+[UPGRADING.md](UPGRADING.md).
 
 ## v1.0.0 - unreleased
 

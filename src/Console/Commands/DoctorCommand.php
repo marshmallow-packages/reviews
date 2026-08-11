@@ -63,6 +63,7 @@ final class DoctorCommand extends Command
         $this->reportCapabilities($providers);
         $this->checkConsent($providers);
         $this->checkEstimatedDeliveryDate($providers);
+        $this->noteClientSideRequirements($providers);
         $this->checkEvents();
         $this->reportQueue();
 
@@ -107,7 +108,12 @@ final class DoctorCommand extends Command
     {
         $this->reportDetail($this->label('default_provider'), $this->reviews->getDefaultDriver());
 
-        $names = $this->activeNames();
+        /*
+         * The manager's own list rather than a second reading of config. A
+         * doctor that parses the configuration differently from the thing it
+         * is diagnosing can report a setup that is not the one running.
+         */
+        $names = $this->reviews->activeNames();
 
         if ($names === []) {
             $this->reportWarning($this->label('active_providers'), $this->message('none_active'));
@@ -134,18 +140,6 @@ final class DoctorCommand extends Command
         }
 
         return $providers;
-    }
-
-    /**
-     * Deliberately the manager's own list rather than a second reading of
-     * config. A doctor that parses the configuration differently from the
-     * thing it is diagnosing can report a setup that is not the one running.
-     *
-     * @return list<string>
-     */
-    private function activeNames(): array
-    {
-        return $this->reviews->activeNames();
     }
 
     /**
@@ -258,6 +252,28 @@ final class DoctorCommand extends Command
         }
 
         $this->reportFailure($this->label('delivery_date'), $this->message('delivery_date_required'));
+    }
+
+    /**
+     * What this command cannot check, said out loud.
+     *
+     * Google declines to render unless the invitation carries an email
+     * address, a delivery country and an estimated delivery date. Only the
+     * last of those is visible in config: the other two live on each order, so
+     * a shop selling digital goods, where there is no shipping address and
+     * therefore no country, is configured perfectly and collects nothing. That
+     * is the most likely silent failure this package has, and a diagnostic
+     * that stays quiet about the thing it cannot see is worse than useless.
+     *
+     * @param  array<string, ReviewProvider>  $providers
+     */
+    private function noteClientSideRequirements(array $providers): void
+    {
+        if (! array_key_exists(Reviews::GOOGLE, $providers)) {
+            return;
+        }
+
+        $this->reportDetail($this->label('google_requirements'), $this->message('google_requirements'));
     }
 
     private function checkEvents(): void

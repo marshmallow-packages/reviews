@@ -20,6 +20,7 @@ return [
             'active_providers' => 'Active providers',
             'consent' => 'Consent callback',
             'delivery_date' => 'Estimated delivery date',
+            'google_requirements' => 'Google per order fields',
             'events' => 'Event listening',
             'queue' => 'Queue',
         ],
@@ -54,6 +55,7 @@ return [
 
         'delivery_date_configured' => 'resolver configured',
         'delivery_date_missing' => 'no resolver configured, which only the google provider needs',
+        'google_requirements' => 'cannot be checked from config. Google renders nothing unless each invitation also carries an email address and a delivery country, and the country comes from the shipping address. An order without one, such as a digital product, collects no review even though this configuration is correct.',
         'delivery_date_required' => 'the google provider is active without one, so its opt-in will never render. Set the estimated_delivery_date callable in config/reviews.php, or implement reviewEstimatedDeliveryDate() on the order.',
 
         'events_disabled' => 'disabled, invitations are sent from your own code',

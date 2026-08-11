@@ -8,6 +8,7 @@ use Illuminate\Container\Container as IlluminateContainer;
 use Illuminate\Contracts\Container\Container;
 use Marshmallow\Reviews\Data\InvitationResult;
 use Marshmallow\Reviews\Data\ReviewInvitation;
+use Marshmallow\Reviews\Enums\SkipReason;
 use Marshmallow\Reviews\Facades\Reviews as ReviewsFacade;
 use Marshmallow\Reviews\Reviews;
 use Override;
@@ -85,6 +86,15 @@ final class ReviewsFake extends Reviews
     #[Override]
     public function inviteAll(ReviewInvitation $invitation): array
     {
+        // The fake replaces the manager wholesale, so it has to honour the
+        // master switch itself. Without this, a test asserting that nothing is
+        // invited while REVIEWS_ENABLED is false would fail against the fake
+        // and pass against the real manager, which is the worst way for a test
+        // double to be wrong.
+        if (! $this->enabled()) {
+            return [];
+        }
+
         $this->invitations[] = $invitation;
 
         return [$this->result()];
@@ -96,6 +106,10 @@ final class ReviewsFake extends Reviews
      */
     public function invite(ReviewInvitation $invitation): InvitationResult
     {
+        if (! $this->enabled()) {
+            return InvitationResult::skipped(self::PROVIDER, SkipReason::Disabled);
+        }
+
         $this->invitations[] = $invitation;
 
         return $this->result();
