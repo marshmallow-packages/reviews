@@ -5,8 +5,8 @@ parameters:
         - config
         - tests/Fixtures
     tmpDir: build/phpstan
-    # The deadCatch ignore below only fires under some PHP versions in the
-    # matrix, so an unmatched ignore is expected rather than a problem.
+    # The catch.neverThrown ignore below only fires under some PHP versions in
+    # the matrix, so an unmatched ignore is expected rather than a problem.
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         # PHPStan sees isset($subject->{$name}) on an `object` and concludes
@@ -17,7 +17,7 @@ parameters:
         # this trait works on a cart site at all, so the analyser is wrong
         # here and removing them would fatal every one of them.
         -
-            identifier: deadCatch
+            identifier: catch.neverThrown
             path: src/Concerns/DerivesReviewableOrder.php
         # Larastan resolves the application config path from the bootstrapped
         # Testbench skeleton, so it does not recognise this package's own config
