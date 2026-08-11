@@ -56,7 +56,13 @@ more than one provider at once.
 
 - `Illuminate\Support\Manager::driver($driver = null)` is **untyped**. Adding
   `?string` is a fatal incompatibility that makes the class unloadable, not a
-  warning. `Reviews::driver()` is untyped on purpose.
+  warning. `Reviews::driver()` is untyped on purpose, and carries a
+  `@param string|null $driver` docblock instead.
+  This is also why `pestphp/pest` is pinned to `^5.0` rather than bot-shield's
+  `^4.6`: the Pest 4 type-coverage plugin does not honour that docblock and
+  scores the file at 75%, so a matrix that installed Pest 4 failed `--min=100`
+  while a local Pest 5 run passed. The strictness matches bot-shield, the Pest
+  floor does not.
 - `Order::shippingAddress()` in `marshmallow/cart` is **not** an Eloquent
   relation: it runs its own query and returns a Model, so reading
   `$order->shippingAddress` throws `LogicException`.
